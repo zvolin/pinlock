@@ -39,11 +39,11 @@ impl<'connection> Window<'connection> {
             COPY_DEPTH_FROM_PARENT,    // depth (same as root)
             win,                       // window Id
             screen.root,               // parent window
-            0,                         // x
-            0,                         // y
-            150,                       // width
-            150,                       // height
-            10,                        // border width
+            455,                       // x
+            140,                       // y
+            1000,                      // width
+            800,                       // height
+            0,                         // border width
             WindowClass::INPUT_OUTPUT, // class
             screen.root_visual,        // visual
             &settings,
@@ -54,10 +54,10 @@ impl<'connection> Window<'connection> {
 
         connection.flush()?;
 
-        connection.set_input_focus(InputFocus::NONE, win, CURRENT_TIME)?;
+        connection.set_input_focus(InputFocus::PARENT, win, CURRENT_TIME)?;
         connection.grab_keyboard(
             true,
-            screen.root,
+            win, //screen.root,
             CURRENT_TIME,
             GrabMode::ASYNC,
             GrabMode::ASYNC,
@@ -71,7 +71,7 @@ impl<'connection> Window<'connection> {
 
         connection.grab_pointer(
             true,
-            screen.root,
+            win, //screen.root,
             EventMask::NO_EVENT,
             GrabMode::ASYNC,
             GrabMode::ASYNC,
@@ -101,6 +101,7 @@ impl<'connection> Drop for Window<'connection> {
             .expect("Failed to ungrab the pointer")
             .check()
             .expect("Pointer ungrab caused error");
+        self.conn.flush().expect("Failed to send clean up commands");
     }
 }
 
