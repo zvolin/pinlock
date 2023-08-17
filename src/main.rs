@@ -8,7 +8,7 @@ use x11rb::{
         Event,
     },
     rust_connection::RustConnection,
-    COPY_DEPTH_FROM_PARENT, CURRENT_TIME,
+    COPY_DEPTH_FROM_PARENT, CURRENT_TIME, NONE,
 };
 
 struct Window<'connection> {
@@ -63,11 +63,11 @@ impl<'connection> Window<'connection> {
             GrabMode::ASYNC,
         )?;
 
-        let font = connection.generate_id()?;
-        connection.open_font(font, b"cursor")?;
+        // let font = connection.generate_id()?;
+        // connection.open_font(font, b"cursor")?;
 
-        let cursor = connection.generate_id()?;
-        connection.create_glyph_cursor(cursor, font, font, 58, 58 + 1, 0, 0, 0, 0, 0, 0)?;
+        // let cursor = connection.generate_id()?;
+        // connection.create_glyph_cursor(cursor, font, font, 58, 58 + 1, 0, 0, 0, 0, 0, 0)?;
 
         connection.grab_pointer(
             true,
@@ -76,7 +76,7 @@ impl<'connection> Window<'connection> {
             GrabMode::ASYNC,
             GrabMode::ASYNC,
             win,
-            cursor,
+            NONE,
             CURRENT_TIME,
         )?;
 
